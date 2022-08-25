@@ -1,9 +1,9 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><h3>Froum</h3></div>
+                    <div class="card-header"><h3>Forum</h3></div>
 
                     <div class="form-group pt-3">
                         <lable for="tel" style="font-size: 18px">
@@ -17,6 +17,7 @@
                             cols="50"
                             v-model="item.question"
                             placeholder="Enter your Question"
+                            required
                         />
                     </div>
                     <div class="form-group pt-2">
@@ -39,36 +40,12 @@
                     >
                         {{ isEditing ? "Update" : "Save" }}
                     </button>
+
+
                 </div>
-                <div
-            class="col-md-12 mt-3"
-            style="margin-top: 10px"
-            v-if="lists.length>0"></div>
-
-                  <h2 class="text-center mt-4" style="background-color:#e2e2e2;">Questions</h2>
-            <ul class="list-group">
-                <li
-                    class="list-group-item"
-                    v-for="item in lists"
-                    :key="item.id"
-                >
-                    {{ item.question }}
-                    <span class="float-right" style="float: right">
-                        <button
-                            class="btn btn-warning btn-sm mr-2"
-                            @click="view(item)"
-                        >
-                            view
-                        </button>
-
-
-                    </span>
-                </li>
-            </ul>
-        </div>
             </div>
         </div>
-
+    </div>
 </template>
 
 <script>
@@ -84,16 +61,28 @@ export default {
             },
         };
     },
-    mounted () {
+    mounted() {
         this.fetchAll();
     },
     methods: {
-        fetchAll(){
-            axios.get('api/question').then((response) =>(this.lists=response.data))
+        fetchAll() {
+            axios
+                .get("api/question")
+                .then((response) => (this.lists = response.data));
         },
         save() {
-            axios.post("api/question", this.item).then((response) => {    this.fetchAll();});
+            axios.post("api/question", this.item).then((response) => {
+                this.fetchAll();
+            });
         },
     },
 };
 </script>
+<style>
+.card {
+    border: 1px solid;
+    padding: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+</style>

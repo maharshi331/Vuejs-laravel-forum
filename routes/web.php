@@ -17,4 +17,7 @@ use App\Http\Controllers\QuestionController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/forum',[QuestionController::class,'front']);
+
+Route::get('/{any}', function ($any = null) {
+        return view('welcome');
+    })->where('any', '.*');

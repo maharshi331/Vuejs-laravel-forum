@@ -1,5 +1,7 @@
 <template>
     <div>
+
+
         <div class="form-group">
             <lable for="name"> Name:</lable>
             <input
@@ -55,6 +57,7 @@
                 </li>
             </ul>
         </div>
+
     </div>
 </template>
 <script>
@@ -83,8 +86,8 @@ export default {
                 .then((response) => (this.lists = response.data));
         },
         save() {
-           let  method = axios.post;
-           let url = "/api/tel/";
+            let method = axios.post;
+            let url = "/api/tel/";
             if (this.isEditing) {
                 method = axios.put;
                 url = `/api/tel/${this.temp_id}`;

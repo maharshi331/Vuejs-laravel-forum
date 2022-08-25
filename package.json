@@ -22,5 +22,9 @@
         "vue": "^2.6.12",
         "vue-loader": "^15.10.0",
         "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "vue-advanced-chat": "^1.5.7",
+        "vue-router": "^3.6.4"
     }
 }
