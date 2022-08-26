@@ -32,9 +32,9 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $slug = Str::slug($request->title, '-');
+        $slug = Str::slug($request->question, '-');
 
-        Question::create(['question'=>$request->question, 'description'=>$request->description,'slug'=>$request->slug]);
+        Question::create(['question'=>$request->question, 'description'=>$request->description,'slug'=>$slug]);
         return response("",200);
     }
 
