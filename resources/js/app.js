@@ -55,7 +55,8 @@ const routes = [
         component: require("./components/chat.vue").default,
     },
     {
-        path: "/view",
+        path: "/view/:id",
+        name:'view',
         component: require("./components/view.vue").default,
     },
 ];

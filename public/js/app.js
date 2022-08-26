@@ -5528,8 +5528,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "view",
-  data: function data() {},
-  methods: {}
+  mounted: function mounted() {
+    this.url_data = this.$route.params.id;
+    this.fetchData();
+  },
+  data: function data() {
+    return {
+      url_data: null,
+      post: {},
+      name: ""
+    };
+  },
+  methods: {
+    fetchData: function fetchData() {
+      var _this = this;
+
+      axios.get("/api/question/" + this.$route.params.id).then(function (response) {
+        return _this.post = response.data;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -5944,15 +5962,15 @@ var render = function render() {
       }
     }, [_c("router-link", {
       attrs: {
-        to: "/view"
-      }
-    }, [_c("button", {
-      staticClass: "btn btn-warning btn-sm mr-2",
-      on: {
-        click: function click($event) {
-          return _vm.view(item);
+        to: {
+          name: "view",
+          params: {
+            id: item.id
+          }
         }
       }
+    }, [_c("button", {
+      staticClass: "btn btn-warning btn-sm mr-2"
     }, [_vm._v("\n                                view\n                            ")])])], 1)]);
   }), 0)])])]);
 };
@@ -5979,19 +5997,16 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _vm._m(0);
-};
-
-var staticRenderFns = [function () {
-  var _vm = this,
-      _c = _vm._self._c;
-
   return _c("div", {
     staticClass: "container-fluid"
   }, [_c("h2", {
     staticClass: "mt-4 text-center"
-  }, [_vm._v("Discussion")])]);
-}];
+  }, [_vm._v("Discussion")]), _vm._v(" "), _c("h2", {
+    staticClass: "mt-4 text-center"
+  }, [_vm._v(_vm._s(_vm.url_data))])]);
+};
+
+var staticRenderFns = [];
 render._withStripped = true;
 
 
@@ -6056,7 +6071,8 @@ var routes = [{
   path: "/chat",
   component: (__webpack_require__(/*! ./components/chat.vue */ "./resources/js/components/chat.vue")["default"])
 }, {
-  path: "/view",
+  path: "/view/:id",
+  name: 'view',
   component: (__webpack_require__(/*! ./components/view.vue */ "./resources/js/components/view.vue")["default"])
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({

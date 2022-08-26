@@ -28,11 +28,12 @@
                         ></i>
                         {{ item.question }}
                         <span class="float-right" style="float: right">
-                            <router-link to="/view"
-                                ><button
-                                    class="btn btn-warning btn-sm mr-2"
-                                    @click="view(item)"
-                                >
+                            <router-link
+                                :to="{
+                                    name: 'view',
+                                    params: { id: item.id },
+                                }"
+                                ><button class="btn btn-warning btn-sm mr-2">
                                     view
                                 </button>
                             </router-link>

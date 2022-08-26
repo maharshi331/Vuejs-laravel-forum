@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Log;
 
 class QuestionController extends Controller
 {
@@ -45,7 +46,8 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        return $question;
+
     }
 
     /**
