@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\comments;
 use Illuminate\Http\Request;
+use Log;
 
 class CommentsController extends Controller
 {
@@ -12,9 +13,14 @@ class CommentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+
+        $data= comments::all();
+
+          return response()->json($data);
+
     }
 
     /**
@@ -25,7 +31,8 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        comments::create($request->all());
+       return response("",200);
     }
 
     /**

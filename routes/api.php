@@ -17,4 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('tel', 'TelController');
 Route::apiResource('question', 'QuestionController');
 Route::apiResource('answer', 'AnswerController');
+Route::apiResource('comment', 'CommentsController');
 

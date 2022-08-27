@@ -7,6 +7,25 @@
             <div class="col-md-7">
                 <h3 class="mt-5">Discussed Answers</h3>
                 <div class="ul" v-for="item in data" :key="item.id">
+
+
+                    <input
+                        v-if="comment.answer_id == item.id"
+                        class="form-control-sm"
+                        type="text"
+                        v-model="comment.comment"
+                        ref="anyName"
+                        style="float: right"
+                        placeholder="Add Comment"
+                    />
+
+                    <button
+                        class="btn btn-warning btn-sm"
+                        v-if="comment.answer_id == item.id"
+                        @click="addCommentToAnswer"
+                    >
+                        save
+                    </button>
                     <ul>
                         {{
                             item.answer
@@ -14,11 +33,14 @@
                         {{
                             item.description
                         }}
-
-                        <button id="btn" style="float: right" @click="append">
-                            Add comment +
-                        </button>
+                        <h6 @click="CallToComments(item.id)">All Comments</h6>
+                        <div v-for="items in variableOne" :key="items.id">
+                            <p v-if="comment.answer_id == item.id">
+                                {{ items.comment }}
+                            </p>
+                        </div>
                     </ul>
+
                     <div id="ap"></div>
                 </div>
             </div>
@@ -52,18 +74,28 @@ export default {
         this.url_data = this.$route.params.id;
         this.fetchData();
         this.fetchAll();
+        this.fetchComment();
     },
     data() {
         return {
             url_data: null,
             post: {},
-            data: [],
+            CommentData: [],
+            comment: {
+                comment: "",
+                answer_id: 0,
+            },
+            data: {
+                data: "",
+                id: "1",
+            },
             name: "",
             item: {
                 answer: "",
                 question_id: this.$route.params.id,
             },
             editedTodo: null,
+            variableOne: [],
         };
     },
     methods: {
@@ -85,6 +117,7 @@ export default {
         save() {
             axios.post("/api/answer", this.item).then((response) => {
                 this.fetchAll();
+                this.item.answer="";
             });
         },
 
@@ -92,6 +125,26 @@ export default {
             axios
                 .get("/api/answer?question_id=" + this.$route.params.id)
                 .then((response) => (this.data = response.data));
+        },
+        addComment(id) {
+            this.comment.comment = "";
+            this.comment.answer_id = id;
+        },
+        addCommentToAnswer() {
+            axios.post("/api/comment/", this.comment).then((response) => {});
+            this.comment.comment = "";
+        },
+        fetchComment() {
+            axios
+                .get("/api/comment")
+                .then((response) => (this.CommentData = response.data));
+        },
+        CallToComments(id) {
+            this.comment.answer_id = id;
+            this.variableOne = this.CommentData.filter(
+                (itemInArray) => itemInArray.answer_id == this.comment.answer_id
+            );
+            console.log(variableOne);
         },
     },
 };
@@ -128,7 +181,11 @@ export default {
 }
 #btn {
     color: #0008187a;
-    background-color: #a8bbde7a;
-    box-shadow: 1px 0px 3px 0px black;
+
+    box-shadow: 1px 0px 3px 0px rgb(0, 0, 0);
+}
+.btn-sm {
+    float: right;
+    align-items: center;
 }
 </style>

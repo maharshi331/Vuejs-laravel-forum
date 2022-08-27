@@ -5537,18 +5537,28 @@ __webpack_require__.r(__webpack_exports__);
     this.url_data = this.$route.params.id;
     this.fetchData();
     this.fetchAll();
+    this.fetchComment();
   },
   data: function data() {
     return {
       url_data: null,
       post: {},
-      data: [],
+      CommentData: [],
+      comment: {
+        comment: "",
+        answer_id: 0
+      },
+      data: {
+        data: "",
+        id: "1"
+      },
       name: "",
       item: {
         answer: "",
         question_id: this.$route.params.id
       },
-      editedTodo: null
+      editedTodo: null,
+      variableOne: []
     };
   },
   methods: {
@@ -5570,6 +5580,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().post("/api/answer", this.item).then(function (response) {
         _this2.fetchAll();
+
+        _this2.item.answer = "";
       });
     },
     fetchAll: function fetchAll() {
@@ -5578,6 +5590,30 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/answer?question_id=" + this.$route.params.id).then(function (response) {
         return _this3.data = response.data;
       });
+    },
+    addComment: function addComment(id) {
+      this.comment.comment = "";
+      this.comment.answer_id = id;
+    },
+    addCommentToAnswer: function addCommentToAnswer() {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post("/api/comment/", this.comment).then(function (response) {});
+      this.comment.comment = "";
+    },
+    fetchComment: function fetchComment() {
+      var _this4 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/api/comment").then(function (response) {
+        return _this4.CommentData = response.data;
+      });
+    },
+    CallToComments: function CallToComments(id) {
+      var _this5 = this;
+
+      this.comment.answer_id = id;
+      this.variableOne = this.CommentData.filter(function (itemInArray) {
+        return itemInArray.answer_id == _this5.comment.answer_id;
+      });
+      console.log(variableOne);
     }
   }
 });
@@ -6047,17 +6083,49 @@ var render = function render() {
     return _c("div", {
       key: item.id,
       staticClass: "ul"
-    }, [_c("ul", [_vm._v("\n                    " + _vm._s(item.answer) + "\n                    " + _vm._s(item.description) + "\n\n                    "), _c("button", {
+    }, [_vm.comment.answer_id == item.id ? _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: _vm.comment.comment,
+        expression: "comment.comment"
+      }],
+      ref: "anyName",
+      refInFor: true,
+      staticClass: "form-control-sm",
       staticStyle: {
         "float": "right"
       },
       attrs: {
-        id: "btn"
+        type: "text",
+        placeholder: "Add Comment"
+      },
+      domProps: {
+        value: _vm.comment.comment
       },
       on: {
-        click: _vm.append
+        input: function input($event) {
+          if ($event.target.composing) return;
+
+          _vm.$set(_vm.comment, "comment", $event.target.value);
+        }
       }
-    }, [_vm._v("\n                        Add comment +\n                    ")])]), _vm._v(" "), _c("div", {
+    }) : _vm._e(), _vm._v(" "), _vm.comment.answer_id == item.id ? _c("button", {
+      staticClass: "btn btn-warning btn-sm",
+      on: {
+        click: _vm.addCommentToAnswer
+      }
+    }, [_vm._v("\n                    save\n                ")]) : _vm._e(), _vm._v(" "), _c("ul", [_vm._v("\n                    " + _vm._s(item.answer) + "\n                    " + _vm._s(item.description) + "\n                    "), _c("h6", {
+      on: {
+        click: function click($event) {
+          return _vm.CallToComments(item.id);
+        }
+      }
+    }, [_vm._v("All Comments")]), _vm._v(" "), _vm._l(_vm.variableOne, function (items) {
+      return _c("div", {
+        key: items.id
+      }, [_vm.comment.answer_id == item.id ? _c("p", [_vm._v("\n                            " + _vm._s(items.comment) + "\n                        ")]) : _vm._e()]);
+    })], 2), _vm._v(" "), _c("div", {
       attrs: {
         id: "ap"
       }
@@ -11566,7 +11634,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.h {\n    margin-top: 0.5rem !important;\n    color: #120958;\n}\n.answer {\n    font-size: 21px;\n    font-weight: 600;\n}\n.mt-4 {\n    margin-top: 1.5rem !important;\n    font-weight: 700;\n}\n.mt-5 {\n    margin-top: 3rem !important;\n    font-weight: 600;\n}\n.btn {\n    margin-top: 31px !important;\n    font-weight: 700;\n}\n.ul {\n    box-shadow: 1px 0px 3px 0px black;\n    color: bloack;\n    background-color: #a8bbde7a;\n    border-radius: 10px;\n    padding: 10px;\n    margin-top: 10px;\n}\n#btn {\n    color: #0008187a;\n    background-color: #a8bbde7a;\n    box-shadow: 1px 0px 3px 0px black;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.h {\n    margin-top: 0.5rem !important;\n    color: #120958;\n}\n.answer {\n    font-size: 21px;\n    font-weight: 600;\n}\n.mt-4 {\n    margin-top: 1.5rem !important;\n    font-weight: 700;\n}\n.mt-5 {\n    margin-top: 3rem !important;\n    font-weight: 600;\n}\n.btn {\n    margin-top: 31px !important;\n    font-weight: 700;\n}\n.ul {\n    box-shadow: 1px 0px 3px 0px black;\n    color: bloack;\n    background-color: #a8bbde7a;\n    border-radius: 10px;\n    padding: 10px;\n    margin-top: 10px;\n}\n#btn {\n    color: #0008187a;\n\n    box-shadow: 1px 0px 3px 0px rgb(0, 0, 0);\n}\n.btn-sm {\n    float: right;\n    align-items: center;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
