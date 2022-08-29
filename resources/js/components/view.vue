@@ -7,8 +7,6 @@
             <div class="col-md-7">
                 <h3 class="mt-5">Discussed Answers</h3>
                 <div class="ul" v-for="item in data" :key="item.id">
-
-
                     <input
                         v-if="comment.answer_id == item.id"
                         class="form-control-sm"
@@ -33,7 +31,7 @@
                         {{
                             item.description
                         }}
-                        <h6 @click="CallToComments(item.id)">All Comments</h6>
+                        <h6 @click.prevent="CallToComments(item.id)">All Comments</h6>
                         <div v-for="items in variableOne" :key="items.id">
                             <p v-if="comment.answer_id == item.id">
                                 {{ items.comment }}
@@ -41,7 +39,16 @@
                         </div>
                     </ul>
 
-                    <div id="ap"></div>
+                    <button class="btn" id="green" @click="like(item.id)">
+                        <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
+                        <i v-if="comment.answer_id == item.id"> {{ likes }} </i>
+                    </button>
+                    <button class="btn" id="red">
+                        <i
+                            class="fa fa-thumbs-down fa-lg"
+                            aria-hidden="true"
+                        ></i>
+                    </button>
                 </div>
             </div>
             <div class="col-md-3 pt-5">
@@ -75,12 +82,14 @@ export default {
         this.fetchData();
         this.fetchAll();
         this.fetchComment();
+        this.myFunction();
     },
     data() {
         return {
             url_data: null,
             post: {},
             CommentData: [],
+            likes: 0,
             comment: {
                 comment: "",
                 answer_id: 0,
@@ -99,13 +108,10 @@ export default {
         };
     },
     methods: {
-        append() {
-            var objTo = document.getElementById("btn");
-            var divComment = document.getElementById("ap");
-            divComment.innerHTML =
-                ' <input type="text" class="form-control" placeholder="Enter your comment">';
+        like(id) {
+            this.likes = this.likes + 1;
+            this.comment.answer_id = id;
 
-            divComment.append(divComment);
         },
 
         fetchData() {
@@ -117,7 +123,7 @@ export default {
         save() {
             axios.post("/api/answer", this.item).then((response) => {
                 this.fetchAll();
-                this.item.answer="";
+                this.item.answer = "";
             });
         },
 

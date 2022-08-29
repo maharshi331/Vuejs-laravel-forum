@@ -5538,12 +5538,14 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchData();
     this.fetchAll();
     this.fetchComment();
+    this.myFunction();
   },
   data: function data() {
     return {
       url_data: null,
       post: {},
       CommentData: [],
+      likes: 0,
       comment: {
         comment: "",
         answer_id: 0
@@ -5562,11 +5564,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    append: function append() {
-      var objTo = document.getElementById("btn");
-      var divComment = document.getElementById("ap");
-      divComment.innerHTML = ' <input type="text" class="form-control" placeholder="Enter your comment">';
-      divComment.append(divComment);
+    like: function like(id) {
+      this.likes = this.likes + 1;
+      this.comment.answer_id = id;
     },
     fetchData: function fetchData() {
       var _this = this;
@@ -6118,6 +6118,7 @@ var render = function render() {
     }, [_vm._v("\n                    save\n                ")]) : _vm._e(), _vm._v(" "), _c("ul", [_vm._v("\n                    " + _vm._s(item.answer) + "\n                    " + _vm._s(item.description) + "\n                    "), _c("h6", {
       on: {
         click: function click($event) {
+          $event.preventDefault();
           return _vm.CallToComments(item.id);
         }
       }
@@ -6125,11 +6126,22 @@ var render = function render() {
       return _c("div", {
         key: items.id
       }, [_vm.comment.answer_id == item.id ? _c("p", [_vm._v("\n                            " + _vm._s(items.comment) + "\n                        ")]) : _vm._e()]);
-    })], 2), _vm._v(" "), _c("div", {
+    })], 2), _vm._v(" "), _c("button", {
+      staticClass: "btn",
       attrs: {
-        id: "ap"
+        id: "green"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.like(item.id);
+        }
       }
-    })]);
+    }, [_c("i", {
+      staticClass: "fa fa-thumbs-up fa-lg",
+      attrs: {
+        "aria-hidden": "true"
+      }
+    }), _vm._v(" "), _vm.comment.answer_id == item.id ? _c("i", [_vm._v(" " + _vm._s(_vm.likes) + " ")]) : _vm._e()]), _vm._v(" "), _vm._m(0, true)]);
   })], 2), _vm._v(" "), _c("div", {
     staticClass: "col-md-3 pt-5"
   }, [_c("h5", {
@@ -6173,7 +6185,22 @@ var render = function render() {
   }, [_vm._v("\n                Post answer\n            ")])])])]);
 };
 
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("button", {
+    staticClass: "btn",
+    attrs: {
+      id: "red"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-thumbs-down fa-lg",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]);
+}];
 render._withStripped = true;
 
 
